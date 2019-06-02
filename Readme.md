@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Наталья Беляева](https://up.htmlacademy.ru/javascript/17/user/498753).
-* Наставник: `Михаил Семиколенов`.
+* Наставник: `Михаил`.
 
 ---
 

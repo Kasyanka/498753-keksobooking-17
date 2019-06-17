@@ -40,8 +40,8 @@ var template = document.querySelector('#pin')
 
 for (i = 0; i < 8; i++) {
   var block = template.cloneNode(true);
-  block.style.left = ads[i].location.x;
-  block.style.top = ads[i].location.y;
+  block.style.left = ads[i].location.x + 'px';
+  block.style.top = ads[i].location.y + 'px';
   block.querySelector('img').src = ads[i].author.avatar;
   block.querySelector('img').alt = ads[i].alt.text;
   blocks.appendChild(block);

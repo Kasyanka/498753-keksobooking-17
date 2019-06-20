@@ -1,7 +1,7 @@
 'use strict';
 var TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var ALT_TEXT = ['объявление-1', 'объявление-2', 'объявление-3'];
-var SUM_AVATAR = [1, 2, 3, 4, 5, 6, 7, 8]
+var SUM_AVATAR = [1, 2, 3, 4, 5, 6, 7, 8];
 
 var randomSearch = function (min, max) {
   return min + Math.floor(Math.random() * (max + 1 - min));
@@ -51,23 +51,25 @@ var createBlock = function (templ, objeckt) {
   return block;
 };
 
-
-var renderPins = function (n) {
-  var special = document.querySelector('.map');
-  special.classList.remove('map--faded');
-
-  var blocks = document.querySelector('.map__pins');
-  var template = document.querySelector('#pin')
-.content
-.querySelector('.map__pin');
+var getFragment = function (n) {
   var fragment = document.createDocumentFragment();
-  var pinData = generatPinData(8); // массив из 8 объектов с разными параметрами для Pin
+  var pinData = generatPinData(n); // массив из 8 объектов с разными параметрами для Pin
+  var template = document.querySelector('#pin')
+                  .content
+                  .querySelector('.map__pin');
   for (var i = 0; i < n; i++) {
     var block = createBlock(template, pinData[i]);
     fragment.appendChild(block);
   }
+  return fragment;
+};
 
-  blocks.appendChild(fragment);
+var renderPins = function (pinCount) {
+  var special = document.querySelector('.map');
+  special.classList.remove('map--faded');
+  var blocks = document.querySelector('.map__pins');
+  var fragmentPin = getFragment(pinCount);
+  blocks.appendChild(fragmentPin);
 
 };
 renderPins(8);

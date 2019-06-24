@@ -116,64 +116,7 @@ var activateForm = function () {
 };
 activateForm();
 
-var addAddress = function () {
-  var address = document.querySelector('#address');
-  var pinMainLeft = document.querySelector('.map__pin--main').style.left;
-  var pinMainTop = document.querySelector('.map__pin--main').style.top;
-  address.setAttribute('value', pinMainLeft + ', ' + pinMainTop);
-};
-addAddress();
-
-var settingPlaceholder = function () {
-  var select = document.querySelector('#type');
-  var price = document.querySelector('#price');
-
-  select.addEventListener('click', function () {
-    if (select.selectedIndex === 0) {
-      price.setAttribute('min', '0');
-      price.placeholder = 0;
-    }
-    if (select.selectedIndex === 1) {
-      price.setAttribute('min', '1000');
-      price.placeholder = 1000;
-    }
-    if (select.selectedIndex === 2) {
-      price.setAttribute('min', '5000');
-      price.placeholder = 5000;
-    }
-    if (select.selectedIndex === 3) {
-      price.setAttribute('min', '10000');
-      price.placeholder = 10000;
-    }
-  });
-};
-settingPlaceholder();
-
-var settingTime = function () {
-  var selectTimeIn = document.querySelector('#timein');
-  var selectTimeOut = document.querySelector('#timeout');
-
-  selectTimeIn.addEventListener('click', function () {
-    if (selectTimeIn.selectedIndex === 0) {
-      selectTimeOut.selectedIndex = 0;
-    }
-    if (selectTimeIn.selectedIndex === 1) {
-      selectTimeOut.selectedIndex = 1;
-    }
-    if (selectTimeIn.selectedIndex === 2) {
-      selectTimeOut.selectedIndex = 2;
-    }
-  });
-  selectTimeOut.addEventListener('click', function () {
-    if (selectTimeOut.selectedIndex === 0) {
-      selectTimeIn.selectedIndex = 0;
-    }
-    if (selectTimeOut.selectedIndex === 1) {
-      selectTimeIn.selectedIndex = 1;
-    }
-    if (selectTimeOut.selectedIndex === 2) {
-      selectTimeIn.selectedIndex = 2;
-    }
-  });
-};
-settingTime();
+var address = document.querySelector('#address');
+var pinMainLeft = document.querySelector('.map__pin--main').style.left;
+var pinMainTop = document.querySelector('.map__pin--main').style.top;
+address.setAttribute('value', pinMainLeft + ', ' + pinMainTop);

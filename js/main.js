@@ -2,6 +2,7 @@
 var TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var ALT_TEXT = ['объявление-1', 'объявление-2', 'объявление-3'];
 var SUM_AVATAR = [1, 2, 3, 4, 5, 6, 7, 8];
+var PINS_COUNT = 8;
 
 var randomSearch = function (min, max) {
   return min + Math.floor(Math.random() * (max + 1 - min));
@@ -65,8 +66,6 @@ var getFragment = function (n) {
 };
 
 var renderPins = function (pinCount) {
-  // var special = document.querySelector('.map');
-  // special.classList.remove('map--faded');
   var blocks = document.querySelector('.map__pins');
   var fragmentPin = getFragment(pinCount);
   blocks.appendChild(fragmentPin);
@@ -85,37 +84,39 @@ var deactivationInput = function () {
   for (i = 0; i < adFormFieldset.length; i++) {
     adFormFieldset[i].setAttribute('disabled', 'disabled');
   }
-// console.log(adFormInput);
 };
 deactivationInput();
 
+var onClickActivate = function () {
+  var adForm = document.querySelector('.ad-form');
+  var special = document.querySelector('.map');
+  adForm.classList.remove('ad-form--disabled');
+  special.classList.remove('map--faded');
+
+  var adFormInput = document.querySelectorAll('.ad-form input');
+  for (var i = 0; i < adFormInput.length; i++) {
+    adFormInput[i].removeAttribute('disabled');
+  }
+
+  var adFormSelect = document.querySelectorAll('.ad-form select');
+  for (i = 0; i < adFormSelect.length; i++) {
+    adFormSelect[i].removeAttribute('disabled');
+  }
+
+  var adFormFieldset = document.querySelectorAll('.ad-form .ad-form__element--wide');
+  for (i = 0; i < adFormFieldset.length; i++) {
+    adFormFieldset[i].removeAttribute('disabled');
+  }
+  renderPins(PINS_COUNT);
+};
+
 var activateForm = function () {
   var activate = document.querySelector('.map__pin--main');
-  activate.addEventListener('click', function () {
-    var adForm = document.querySelector('.ad-form');
-    var special = document.querySelector('.map');
-    adForm.classList.remove('ad-form--disabled');
-    special.classList.remove('map--faded');
-
-    var adFormInput = document.querySelectorAll('.ad-form input');
-    for (var i = 0; i < adFormInput.length; i++) {
-      adFormInput[i].removeAttribute('disabled');
-    }
-
-    var adFormSelect = document.querySelectorAll('.ad-form select');
-    for (i = 0; i < adFormSelect.length; i++) {
-      adFormSelect[i].removeAttribute('disabled', 'disabled');
-    }
-
-    var adFormFieldset = document.querySelectorAll('.ad-form .ad-form__element--wide');
-    for (i = 0; i < adFormFieldset.length; i++) {
-      adFormFieldset[i].removeAttribute('disabled', 'disabled');
-    }
-    renderPins(8);
-  });
+  activate.addEventListener('click', onClickActivate);
 };
 activateForm();
 
 var address = document.querySelector('#address');
 var pinMainLeft = document.querySelector('.map__pin--main').style.left;
-address.setAttribute('value', pinMainLeft);
+var pinMainTop = document.querySelector('.map__pin--main').style.top;
+address.setAttribute('value', pinMainLeft + ', ' + pinMainTop);

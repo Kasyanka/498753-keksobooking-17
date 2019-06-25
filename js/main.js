@@ -133,22 +133,18 @@ var settingPlaceholder = function () {
     if (select.selectedIndex === 0) {
       price.setAttribute('min', '0');
       price.placeholder = 0;
-      price.value = 0;
     }
     if (select.selectedIndex === 1) {
       price.setAttribute('min', '1000');
       price.placeholder = 1000;
-      price.value = 1000;
     }
     if (select.selectedIndex === 2) {
       price.setAttribute('min', '5000');
       price.placeholder = 5000;
-      price.value = 5000;
     }
     if (select.selectedIndex === 3) {
       price.setAttribute('min', '10000');
       price.placeholder = 10000;
-      price.value = 10000;
     }
   });
 };
@@ -182,3 +178,31 @@ var settingTime = function () {
   });
 };
 settingTime();
+
+var settingRoomNumber = function () {
+  var selectRoomNumber = document.querySelector('#room_number');
+  var selectCapacity = document.querySelector('#capacity');
+  var selectCapacityOption1 = selectCapacity.querySelector('[value="1"]');
+  var selectCapacityOption2 = selectCapacity.querySelector('[value="2"]');
+  var selectCapacityOption3 = selectCapacity.querySelector('[value="3"]');
+  var selectCapacityOption0 = selectCapacity.querySelector('[value="0"]');
+
+  selectRoomNumber.addEventListener('click', function () {
+    if (selectRoomNumber.selectedIndex === 1) {
+      selectCapacityOption2.style.display = 'block';
+    }
+    if (selectRoomNumber.selectedIndex === 2) {
+      selectCapacityOption1.style.display = 'block';
+      selectCapacityOption2.style.display = 'block';
+      selectCapacityOption3.style.display = 'block';
+    }
+    if (selectRoomNumber.selectedIndex === 3) {
+      selectCapacityOption1.style.display = 'none';
+      selectCapacityOption0.style.display = 'block';
+      selectCapacityOption1.removeAttribute('selected');
+      selectCapacityOption0.setAttribute('selected', 'selected');
+    }
+
+  });
+};
+settingRoomNumber();

@@ -118,8 +118,8 @@ activateForm();
 
 var addAddress = function () {
   var address = document.querySelector('#address');
-  var pinMainLeft = document.querySelector('.map__pin--main').style.left;
-  var pinMainTop = document.querySelector('.map__pin--main').style.top;
+  var pinMainLeft = parseInt(document.querySelector('.map__pin--main').style.left, 10) + 33;
+  var pinMainTop = parseInt(document.querySelector('.map__pin--main').style.top, 10) + 65 + 22;
   address.setAttribute('value', pinMainLeft + ', ' + pinMainTop);
 };
 addAddress();
@@ -128,22 +128,27 @@ var settingPlaceholder = function () {
   var select = document.querySelector('#type');
   var price = document.querySelector('#price');
 
-  select.addEventListener('click', function () {
+  select.addEventListener('click', function (evt) {
+    evt.preventDefault();
     if (select.selectedIndex === 0) {
       price.setAttribute('min', '0');
       price.placeholder = 0;
+      price.value = 0;
     }
     if (select.selectedIndex === 1) {
       price.setAttribute('min', '1000');
       price.placeholder = 1000;
+      price.value = 1000;
     }
     if (select.selectedIndex === 2) {
       price.setAttribute('min', '5000');
       price.placeholder = 5000;
+      price.value = 5000;
     }
     if (select.selectedIndex === 3) {
       price.setAttribute('min', '10000');
       price.placeholder = 10000;
+      price.value = 10000;
     }
   });
 };

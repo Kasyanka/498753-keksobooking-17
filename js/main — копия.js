@@ -138,9 +138,7 @@ var movePin = function () {
 
       var addressX = activateMove.style.left = (activateMove.offsetLeft - shift.x) + 'px';
       var addressY = activateMove.style.top = (activateMove.offsetTop - shift.y) + 'px';
-      if (parseInt(addressY, 10) < 130) {
-        document.removeEventListener('mousemove', onMouseMove);
-      }
+
       // настройка адреса
       var addAddress = function () {
         var address = document.querySelector('#address');

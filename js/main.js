@@ -125,7 +125,9 @@ var movePin = function () {
     };
 
     var onMouseMove = function (moveEvt) {
-
+      if (moveEvt.clientY < 130 || moveEvt.clientY > 630 || moveEvt.clientX < 400 || moveEvt.clientX > 1500) {
+        return;
+      }
       var shift = {
         x: startCoords.x - moveEvt.clientX,
         y: startCoords.y - moveEvt.clientY
@@ -138,9 +140,7 @@ var movePin = function () {
 
       var addressX = activateMove.style.left = (activateMove.offsetLeft - shift.x) + 'px';
       var addressY = activateMove.style.top = (activateMove.offsetTop - shift.y) + 'px';
-      if (parseInt(addressY, 10) < 130) {
-        document.removeEventListener('mousemove', onMouseMove);
-      }
+
       // настройка адреса
       var addAddress = function () {
         var address = document.querySelector('#address');

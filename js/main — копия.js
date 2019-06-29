@@ -230,19 +230,37 @@ var settingRoomNumber = function () {
   var selectCapacity = document.querySelector('#capacity');
 
   selectRoomNumber.addEventListener('click', function () {
-
-    selectCapacity.options[0].style.display = selectRoomNumber.selectedIndex === 3 ? 'none' : 'block';
-    selectCapacity.options[1].style.display = selectRoomNumber.selectedIndex === 0 ? 'none' : selectCapacity.options[1].style.display = selectRoomNumber.selectedIndex === 3 ? 'none' : 'block';
-    selectCapacity.options[2].style.display = selectRoomNumber.selectedIndex === 2 ? 'block' : 'none';
-    selectCapacity.options[3].style.display = selectRoomNumber.selectedIndex === 3 ? 'block' : 'none';
-
-    if (selectRoomNumber.selectedIndex === 0 || selectRoomNumber.selectedIndex === 1 || selectRoomNumber.selectedIndex === 2) {
+    if (selectRoomNumber.selectedIndex === 0) {
+      selectCapacity.options[0].style.display = 'block';
+      selectCapacity.options[1].style.display = 'none';
+      selectCapacity.options[2].style.display = 'none';
+      selectCapacity.options[3].style.display = 'none';
+      selectCapacity.options[0].setAttribute('selected', 'selected');
+      selectCapacity.options[3].removeAttribute('selected');
+    }
+    if (selectRoomNumber.selectedIndex === 1) {
+      selectCapacity.options[0].style.display = 'block';
+      selectCapacity.options[1].style.display = 'block';
+      selectCapacity.options[2].style.display = 'none';
+      selectCapacity.options[3].style.display = 'none';
+      selectCapacity.options[0].setAttribute('selected', 'selected');
+      selectCapacity.options[3].removeAttribute('selected');
+    }
+    if (selectRoomNumber.selectedIndex === 2) {
+      selectCapacity.options[0].style.display = 'block';
+      selectCapacity.options[1].style.display = 'block';
+      selectCapacity.options[2].style.display = 'block';
+      selectCapacity.options[3].style.display = 'none';
       selectCapacity.options[0].setAttribute('selected', 'selected');
       selectCapacity.options[3].removeAttribute('selected');
     }
     if (selectRoomNumber.selectedIndex === 3) {
-      selectCapacity.options[0].removeAttribute('selected');
+      selectCapacity.options[0].style.display = 'none';
+      selectCapacity.options[1].style.display = 'none';
+      selectCapacity.options[2].style.display = 'none';
+      selectCapacity.options[3].style.display = 'block';
       selectCapacity.options[3].setAttribute('selected', 'selected');
+      selectCapacity.options[0].removeAttribute('selected');
     }
   });
 };

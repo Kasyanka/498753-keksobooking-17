@@ -1,4 +1,5 @@
 'use strict';
+// 8 объявлений появляются на карте
 var TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var ALT_TEXT = ['объявление-1', 'объявление-2', 'объявление-3'];
 var SUM_AVATAR = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -87,43 +88,88 @@ var deactivationInput = function () {
 };
 deactivationInput();
 
+var single = false;
 var onClickActivate = function () {
-  var adForm = document.querySelector('.ad-form');
-  var special = document.querySelector('.map');
-  adForm.classList.remove('ad-form--disabled');
-  special.classList.remove('map--faded');
+  if (!single) {
+    var adForm = document.querySelector('.ad-form');
+    var special = document.querySelector('.map');
+    adForm.classList.remove('ad-form--disabled');
+    special.classList.remove('map--faded');
 
-  var adFormInput = document.querySelectorAll('.ad-form input');
-  for (var i = 0; i < adFormInput.length; i++) {
-    adFormInput[i].removeAttribute('disabled');
-  }
+    var adFormInput = document.querySelectorAll('.ad-form input');
+    for (var i = 0; i < adFormInput.length; i++) {
+      adFormInput[i].removeAttribute('disabled');
+    }
 
-  var adFormSelect = document.querySelectorAll('.ad-form select');
-  for (i = 0; i < adFormSelect.length; i++) {
-    adFormSelect[i].removeAttribute('disabled');
-  }
+    var adFormSelect = document.querySelectorAll('.ad-form select');
+    for (i = 0; i < adFormSelect.length; i++) {
+      adFormSelect[i].removeAttribute('disabled');
+    }
 
-  var adFormFieldset = document.querySelectorAll('.ad-form .ad-form__element--wide');
-  for (i = 0; i < adFormFieldset.length; i++) {
-    adFormFieldset[i].removeAttribute('disabled');
+    var adFormFieldset = document.querySelectorAll('.ad-form .ad-form__element--wide');
+    for (i = 0; i < adFormFieldset.length; i++) {
+      adFormFieldset[i].removeAttribute('disabled');
+    }
+    renderPins(PINS_COUNT);
   }
-  renderPins(PINS_COUNT);
+  single = true;
 };
+
+var movePin = function () {
+  var activateMove = document.querySelector('.map__pin--main');
+  activateMove.addEventListener('mousedown', function (evt) {
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      if ((moveEvt.clientY + window.pageYOffset) < 130 || (moveEvt.clientY + window.pageYOffset) > 630 || moveEvt.clientX < 400 || moveEvt.clientX > 1500) {
+        return;
+      }
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      var addressX = activateMove.style.left = (activateMove.offsetLeft - shift.x) + 'px';
+      var addressY = activateMove.style.top = (activateMove.offsetTop - shift.y) + 'px';
+
+      // настройка адреса
+      var addAddress = function () {
+        var address = document.querySelector('#address');
+        var pinMainLeft = parseInt(addressX, 10) + 33;
+        var pinMainTop = parseInt(addressY, 10) + 65 + 22;
+        address.setAttribute('value', pinMainLeft + ', ' + pinMainTop);
+      };
+      addAddress();
+    };
+
+    var onMouseUp = function () {
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+};
+movePin();
 
 var activateForm = function () {
   var activate = document.querySelector('.map__pin--main');
-  activate.addEventListener('click', onClickActivate);
+  activate.addEventListener('mousedown', onClickActivate);
 };
 activateForm();
 
-var addAddress = function () {
-  var address = document.querySelector('#address');
-  var pinMainLeft = parseInt(document.querySelector('.map__pin--main').style.left, 10) + 33;
-  var pinMainTop = parseInt(document.querySelector('.map__pin--main').style.top, 10) + 65 + 22;
-  address.setAttribute('value', pinMainLeft + ', ' + pinMainTop);
-};
-addAddress();
-
+// настройки прайса
 var settingPlaceholder = function () {
   var select = document.querySelector('#type');
   var price = document.querySelector('#price');
@@ -149,7 +195,7 @@ var settingPlaceholder = function () {
   });
 };
 settingPlaceholder();
-
+// настройки времени заезда и выезда
 var settingTime = function () {
   var selectTimeIn = document.querySelector('#timein');
   var selectTimeOut = document.querySelector('#timeout');
@@ -178,44 +224,27 @@ var settingTime = function () {
   });
 };
 settingTime();
-
+// настройки кол-ва комнат и кол-ва гостей
 var settingRoomNumber = function () {
   var selectRoomNumber = document.querySelector('#room_number');
   var selectCapacity = document.querySelector('#capacity');
 
   selectRoomNumber.addEventListener('click', function () {
-    if (selectRoomNumber.selectedIndex === 0) {
-      selectCapacity.options[0].style.display = 'block';
-      selectCapacity.options[1].style.display = 'none';
-      selectCapacity.options[2].style.display = 'none';
-      selectCapacity.options[3].style.display = 'none';
-      selectCapacity.options[0].setAttribute('selected', 'selected');
-      selectCapacity.options[3].removeAttribute('selected');
-    }
-    if (selectRoomNumber.selectedIndex === 1) {
-      selectCapacity.options[0].style.display = 'block';
-      selectCapacity.options[1].style.display = 'block';
-      selectCapacity.options[2].style.display = 'none';
-      selectCapacity.options[3].style.display = 'none';
-      selectCapacity.options[0].setAttribute('selected', 'selected');
-      selectCapacity.options[3].removeAttribute('selected');
-    }
-    if (selectRoomNumber.selectedIndex === 2) {
-      selectCapacity.options[0].style.display = 'block';
-      selectCapacity.options[1].style.display = 'block';
-      selectCapacity.options[2].style.display = 'block';
-      selectCapacity.options[3].style.display = 'none';
+
+    selectCapacity.options[0].style.display = selectRoomNumber.selectedIndex === 3 ? 'none' : 'block';
+    selectCapacity.options[1].style.display = selectRoomNumber.selectedIndex === 0 ? 'none' : selectCapacity.options[1].style.display = selectRoomNumber.selectedIndex === 3 ? 'none' : 'block';
+    selectCapacity.options[2].style.display = selectRoomNumber.selectedIndex === 2 ? 'block' : 'none';
+    selectCapacity.options[3].style.display = selectRoomNumber.selectedIndex === 3 ? 'block' : 'none';
+
+    if (selectRoomNumber.selectedIndex === 0 || selectRoomNumber.selectedIndex === 1 || selectRoomNumber.selectedIndex === 2) {
       selectCapacity.options[0].setAttribute('selected', 'selected');
       selectCapacity.options[3].removeAttribute('selected');
     }
     if (selectRoomNumber.selectedIndex === 3) {
-      selectCapacity.options[0].style.display = 'none';
-      selectCapacity.options[1].style.display = 'none';
-      selectCapacity.options[2].style.display = 'none';
-      selectCapacity.options[3].style.display = 'block';
-      selectCapacity.options[3].setAttribute('selected', 'selected');
       selectCapacity.options[0].removeAttribute('selected');
+      selectCapacity.options[3].setAttribute('selected', 'selected');
     }
   });
 };
 settingRoomNumber();
+

@@ -2,13 +2,11 @@
 'use strict';
 
 (function () {
-  // функция вывода 8-ми Pinов на карту
-  var PINS_COUNT = 8;
-
+  // функция вывода всех Pinов с сервера на карту
   var single = false;
   var onClickActivate = function () {
     if (!single) {
-      window.renderPins(PINS_COUNT);
+      window.top();
     }
     single = true;
   };

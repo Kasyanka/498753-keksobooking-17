@@ -6,7 +6,7 @@
   var single = false;
   var onClickActivate = function () {
     if (!single) {
-      window.top();
+      window.renderPinsClick();
     }
     single = true;
   };

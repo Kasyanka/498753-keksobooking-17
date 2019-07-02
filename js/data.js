@@ -1,7 +1,7 @@
 // Файл data.js
 'use strict';
 
-window.top = function () {
+window.renderPinsClick = function () {
 
   // функция создания Pinов но без подтянутых параметров
   var createBlock = function (templ, objeckt) {
@@ -46,4 +46,4 @@ window.top = function () {
   };
   window.backend.load(renderPins, errorHandler);
 
-};
+};()

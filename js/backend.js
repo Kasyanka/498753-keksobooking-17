@@ -1,7 +1,7 @@
 'use strict';
 window.backend = (function () {
   var URL_SAVE = 'https://js.dump.academy/code-and-magick';
-  var URL_LOAD = 'https://js.dump.academy/code-and-magick/data';
+  var URL_LOAD = 'https://js.dump.academy/keksobooking/data';
 
   return {
     save: function (data, onLoad, onError) {

@@ -9,7 +9,6 @@ window.renderPinsClick = function () {
     block.style.left = objeckt.location.x + 'px';
     block.style.top = objeckt.location.y + 'px';
     block.querySelector('img').src = objeckt.author.avatar;
-    block.querySelector('img').alt = objeckt.alt.text;
     return block;
   };
 
@@ -46,4 +45,4 @@ window.renderPinsClick = function () {
   };
   window.backend.load(renderPins, errorHandler);
 
-};()
+};

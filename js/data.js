@@ -43,6 +43,34 @@ window.renderPinsClick = function () {
     var fragmentPin = getFragment(array);
     blocks.appendChild(fragmentPin);
   };
-  window.backend.load(renderPins, errorHandler);
 
+  var houseType = document.querySelector('#housing-type'); // селект опшнс
+
+  var sevaData = function (type, array) {
+    window.SERVER_DATA = array;
+
+    if (houseType.value === type) {
+      var wizardNames = window.SERVER_DATA.filter(function (objeckt) {
+        return objeckt.offer.type === type;
+      });
+      renderPins(wizardNames.slice(0, 5));
+    }
+  };
+
+  var filteringPins = function (array) {
+    renderPins(array);
+    houseType.addEventListener('change', function () {
+      var mapPins = document.querySelector('.map__pins'); // сюда пишутся пины
+
+      mapPins.innerHTML = '';
+      if (houseType.value === 'any') {
+        renderPins(array);
+      }
+      sevaData('palace', array);
+      sevaData('flat', array);
+      sevaData('house', array);
+      sevaData('bungalo', array);
+    });
+  };
+  window.backend.load(filteringPins, errorHandler);
 };

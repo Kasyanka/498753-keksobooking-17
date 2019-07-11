@@ -49,27 +49,26 @@ window.renderPinsClick = function () {
   var sevaData = function (type, array) {
     window.SERVER_DATA = array;
 
-    if (houseType.value === type) {
-      var wizardNames = window.SERVER_DATA.filter(function (objeckt) {
-        return objeckt.offer.type === type;
-      });
-      renderPins(wizardNames.slice(0, 5));
-    }
+    var wizardNames = window.SERVER_DATA.filter(function (objeckt) {
+      return objeckt.offer.type === type;
+    });
+    renderPins(wizardNames.slice(0, 5));
   };
 
   var filteringPins = function (array) {
     renderPins(array);
     houseType.addEventListener('change', function () {
-      var mapPins = document.querySelector('.map__pins'); // сюда пишутся пины
+      var mapPins = document.querySelector('.map__pins'); // сюда пишутся пины баттоны
+      var mapPin = document.querySelectorAll('.map__pin');
+      for (var i = 1; i < mapPin.length; i++) {
+        mapPins.removeChild(mapPin[i]);
+      }
 
-      mapPins.innerHTML = '';
       if (houseType.value === 'any') {
         renderPins(array);
+      } else {
+        sevaData(houseType.value, array);
       }
-      sevaData('palace', array);
-      sevaData('flat', array);
-      sevaData('house', array);
-      sevaData('bungalo', array);
     });
   };
   window.backend.load(filteringPins, errorHandler);

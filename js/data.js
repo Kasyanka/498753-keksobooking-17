@@ -65,7 +65,7 @@ window.renderPinsClick = function () {
       }
 
       if (houseType.value === 'any') {
-        renderPins(array);
+        renderPins(array.slice(0, 5));
       } else {
         sevaData(houseType.value, array);
       }

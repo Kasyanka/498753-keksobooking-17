@@ -110,8 +110,8 @@
   settingTime();
   // настройки кол-ва комнат и кол-ва гостей
   var settingRoomNumber = function () {
-    var selectRoomNumber = document.querySelector('#room_number');
-    var selectCapacity = document.querySelector('#capacity');
+    var selectRoomNumber = document.querySelector('#room_number'); // первый инпут
+    var selectCapacity = document.querySelector('#capacity'); // второй инпут
 
     selectRoomNumber.addEventListener('click', function () {
 

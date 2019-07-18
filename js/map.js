@@ -5,6 +5,7 @@
   // функция вывода всех Pinов с сервера на карту
   var single = false;
   var onClickActivate = function () {
+
     if (!single) {
       window.renderPinsClick();
     }
@@ -20,6 +21,7 @@
   // функция передвижения главной метки по карте
   var movePin = function () {
     var activateMove = document.querySelector('.map__pin--main');
+
     // зажимаем метку
     activateMove.addEventListener('mousedown', function (evt) {
     // запоминаем координаты
@@ -29,7 +31,7 @@
       };
       // двигаем метку
       var onMouseMove = function (moveEvt) {
-        if ((moveEvt.clientY + window.pageYOffset) < 130 || (moveEvt.clientY + window.pageYOffset) > 630 || moveEvt.clientX < 400 || moveEvt.clientX > 1500) {
+        if ((moveEvt.clientY + window.pageYOffset) < 130 || (moveEvt.clientY + window.pageYOffset) > 630 || moveEvt.clientX < 380 || moveEvt.clientX > 1520) {
           return;
         }
         var shift = {

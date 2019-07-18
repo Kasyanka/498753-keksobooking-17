@@ -20,6 +20,8 @@ window.renderPinsClick = function () {
                   .querySelector('.map__pin');
     for (var i = 0; i < array.length; i++) {
       var block = createBlock(template, array[i]);
+      block.classList.add('pin_all');
+      block.classList.add('pin_' + i);
       fragment.appendChild(block);
     }
     return fragment;
@@ -49,27 +51,33 @@ window.renderPinsClick = function () {
   var sevaData = function (type, array) {
     window.SERVER_DATA = array;
 
-    var wizardNames = window.SERVER_DATA.filter(function (objeckt) {
+    var filterPin = window.SERVER_DATA.filter(function (objeckt) {
       return objeckt.offer.type === type;
     });
-    renderPins(wizardNames.slice(0, 5));
+    renderPins(filterPin.slice(0, 5));
   };
 
   var filteringPins = function (array) {
-    renderPins(array);
+    renderPins(array.slice(0, 5));
+
+    window.renderShowCard(array);
+
     houseType.addEventListener('change', function () {
       var mapPins = document.querySelector('.map__pins'); // сюда пишутся пины баттоны
-      var mapPin = document.querySelectorAll('.map__pin');
+      var mapPin = document.querySelectorAll('.map__pin'); // все пины
       for (var i = 1; i < mapPin.length; i++) {
         mapPins.removeChild(mapPin[i]);
       }
 
       if (houseType.value === 'any') {
         renderPins(array.slice(0, 5));
+        window.renderShowCard(array);
       } else {
         sevaData(houseType.value, array);
+        window.renderShowCard(array);
       }
     });
   };
+
   window.backend.load(filteringPins, errorHandler);
 };

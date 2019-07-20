@@ -25,6 +25,7 @@ window.renderShowCard = function (data) {
     var avatar = element.querySelector('.popup__avatar');
     var photoBlock = element.querySelector('.popup__photos');
     var photoImg = element.querySelector('.popup__photo');
+    var popupClose = element.querySelector('.popup__close');
 
     title.textContent = data[n].offer.title;
     address.textContent = data[n].offer.address;
@@ -65,6 +66,10 @@ window.renderShowCard = function (data) {
     renerFeatures('elevator', elevator);
     renerFeatures('conditioner', conditioner);
 
+    popupClose.addEventListener('click', function () {
+      window.closeCard();
+    });
+
     fragment.appendChild(element);
     return fragment;
   };
@@ -74,14 +79,25 @@ window.renderShowCard = function (data) {
     var block = document.querySelector('.map__filters-container');
     var mapPinAll = document.querySelectorAll('.pin_all');
 
+    window.closeCard = function () {
+      var templateCard = document.querySelector('.map__card');
+      if (templateCard) {
+        map.removeChild(templateCard);
+      }
+    };
+
     for (var i = 0; i < mapPinAll.length; i++) {
       (function (j) {
         mapPinAll[j].addEventListener('click', function () {
-          var templateCard = document.querySelector('.map__card');
-          if (templateCard) {
-            map.removeChild(templateCard);
-          }
+          window.closeCard();
+
           map.insertBefore(getCard(j), block);
+
+          document.addEventListener('keydown', function (evt) {
+            if (evt.keyCode === 27) {
+              window.closeCard();
+            }
+          });
         });
       })(i);
     }

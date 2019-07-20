@@ -21,7 +21,6 @@ window.renderPinsClick = function () {
     for (var i = 0; i < array.length; i++) {
       var block = createBlock(template, array[i]);
       block.classList.add('pin_all');
-      block.classList.add('pin_' + i);
       fragment.appendChild(block);
     }
     return fragment;
@@ -55,6 +54,7 @@ window.renderPinsClick = function () {
       return objeckt.offer.type === type;
     });
     renderPins(filterPin.slice(0, 5));
+    window.renderShowCard(filterPin.slice(0, 5));
   };
 
   var filteringPins = function (array) {
@@ -65,16 +65,17 @@ window.renderPinsClick = function () {
     houseType.addEventListener('change', function () {
       var mapPins = document.querySelector('.map__pins'); // сюда пишутся пины баттоны
       var mapPin = document.querySelectorAll('.map__pin'); // все пины
+
+      // убираем все пины с карты кроме главного
       for (var i = 1; i < mapPin.length; i++) {
         mapPins.removeChild(mapPin[i]);
       }
-
+      window.closeCard();
       if (houseType.value === 'any') {
         renderPins(array.slice(0, 5));
         window.renderShowCard(array);
       } else {
         sevaData(houseType.value, array);
-        window.renderShowCard(array);
       }
     });
   };

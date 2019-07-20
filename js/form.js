@@ -110,8 +110,8 @@
   settingTime();
   // настройки кол-ва комнат и кол-ва гостей
   var settingRoomNumber = function () {
-    var selectRoomNumber = document.querySelector('#room_number'); // первый инпут
-    var selectCapacity = document.querySelector('#capacity'); // второй инпут
+    var selectRoomNumber = document.querySelector('#room_number'); // первый инпут команты
+    var selectCapacity = document.querySelector('#capacity'); // второй инпут гости
 
     selectRoomNumber.addEventListener('click', function () {
 
@@ -127,6 +127,12 @@
       if (selectRoomNumber.selectedIndex === 3) {
         selectCapacity.options[0].removeAttribute('selected');
         selectCapacity.options[3].setAttribute('selected', 'selected');
+      }
+      if (selectRoomNumber.selectedIndex === 0) {
+        selectCapacity.value = '1';
+      }
+      if (selectRoomNumber.selectedIndex === 1) {
+        selectCapacity.value = '2';
       }
     });
   };

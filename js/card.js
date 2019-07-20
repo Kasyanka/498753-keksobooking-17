@@ -2,14 +2,11 @@
 window.renderShowCard = function (data) {
 
   var getCard = function (n) {
-    // var array = window.SERVER_DATA;
-    // console.log(data)
     var fragment = document.createDocumentFragment();
     var template = document.querySelector('#card')
                   .content
                   .querySelector('.map__card');
     var element = template.cloneNode(true);
-    element.classList.add('www');
 
     var title = element.querySelector('.popup__title');
     var address = element.querySelector('.popup__text--address');
@@ -26,13 +23,13 @@ window.renderShowCard = function (data) {
     var conditioner = features.querySelector('.popup__feature--conditioner');
     var description = element.querySelector('.popup__description');
     var avatar = element.querySelector('.popup__avatar');
-    // var photoBlock = element.querySelector('.popup__photos');
-    // var photoImg = element.querySelector('.popup__photo');
+    var photoBlock = element.querySelector('.popup__photos');
+    var photoImg = element.querySelector('.popup__photo');
 
     title.textContent = data[n].offer.title;
     address.textContent = data[n].offer.address;
     price.textContent = data[n].offer.price + '₽/ночь';
-    type.textContent = data[n].offer.type; // доделать
+    type.textContent = data[n].offer.type;
     capacity.textContent = data[n].offer.rooms + ' комнаты для ' + data[n].offer.guests + ' гостей';
     time.textContent = 'Заезд после ' + data[n].offer.checkin + ', ' + 'выезд до ' + data[n].offer.checkout;
     description.textContent = data[n].offer.description;
@@ -48,35 +45,25 @@ window.renderShowCard = function (data) {
     renerType('house', 'Дом');
     renerType('bungalo', 'Бунгало');
 
-    var photoBlock = element.querySelector('.popup__photos');
-    var photoImg = element.querySelector('.popup__photo');
-
     var photosSum = data[n].offer.photos;
     for (var i = 0; i < photosSum.length; i++) {
-      var newImg = photoImg.cloneNode(true)
+      var newImg = photoImg.cloneNode(true);
       photoBlock.appendChild(newImg);
       newImg.src = data[n].offer.photos[i];
     }
     photoBlock.removeChild(photoImg);
 
-    if (data[n].offer.features.indexOf('wifi') === -1) {
-      features.removeChild(wifi);
-    }
-    if (data[n].offer.features.indexOf('dishwasher') === -1) {
-      features.removeChild(dishwasher);
-    }
-    if (data[n].offer.features.indexOf('parking') === -1) {
-      features.removeChild(parking);
-    }
-    if (data[n].offer.features.indexOf('washer') === -1) {
-      features.removeChild(washer);
-    }
-    if (data[n].offer.features.indexOf('elevator') === -1) {
-      features.removeChild(elevator);
-    }
-    if (data[n].offer.features.indexOf('conditioner') === -1) {
-      features.removeChild(conditioner);
-    }
+    var renerFeatures = function (nameFeatures, domElement) {
+      if (data[n].offer.features.indexOf(nameFeatures) === -1) {
+        features.removeChild(domElement);
+      }
+    };
+    renerFeatures('wifi', wifi);
+    renerFeatures('dishwasher', dishwasher);
+    renerFeatures('parking', parking);
+    renerFeatures('washer', washer);
+    renerFeatures('elevator', elevator);
+    renerFeatures('conditioner', conditioner);
 
     fragment.appendChild(element);
     return fragment;

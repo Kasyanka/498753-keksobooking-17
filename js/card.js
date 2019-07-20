@@ -53,8 +53,9 @@ window.renderShowCard = function (data) {
 
     var photosSum = data[n].offer.photos;
     for (var i = 0; i < photosSum.length; i++) {
-      photoBlock.appendChild(photoImg.cloneNode(true));
-      photoImg.src = data[n].offer.photos[i];
+      var newImg = photoImg.cloneNode(true)
+      photoBlock.appendChild(newImg);
+      newImg.src = data[n].offer.photos[i];
     }
     photoBlock.removeChild(photoImg);
 
@@ -85,11 +86,11 @@ window.renderShowCard = function (data) {
     var map = document.querySelector('.map');
     var block = document.querySelector('.map__filters-container');
     var mapPinAll = document.querySelectorAll('.pin_all');
-    var templateCard = document.querySelector('.map__card');
 
     for (var i = 0; i < mapPinAll.length; i++) {
       (function (j) {
         mapPinAll[j].addEventListener('click', function () {
+          var templateCard = document.querySelector('.map__card');
           if (templateCard) {
             map.removeChild(templateCard);
           }

@@ -45,24 +45,37 @@ window.renderPinsClick = function () {
     blocks.appendChild(fragmentPin);
   };
 
-  var houseType = document.querySelector('#housing-type'); // селект опшнс
+  var housingType = document.querySelector('#housing-type'); // селект тип жилья
+  var housingPrice = document.querySelector('#housing-price'); // селект цена
+  var housingRoom = document.querySelector('#housing-rooms'); // селект цена
+  var housingQuest = document.querySelector('#housing-guests'); // селект цена
 
-  var sevaData = function (type, array) {
+  var filteringType = function (type, room, array) {
     window.SERVER_DATA = array;
 
-    var filterPin = window.SERVER_DATA.filter(function (objeckt) {
+    var filterPinType = window.SERVER_DATA.filter(function (objeckt) {
       return objeckt.offer.type === type;
     });
-    renderPins(filterPin.slice(0, 5));
-    window.renderShowCard(filterPin.slice(0, 5));
+
+    console.log(filterPinType)
+
+    var filterPinRooms = filterPinType.filter(function (objeckt) {
+      return objeckt.offer.rooms === room;
+    });
+
+    console.log(room)
+
+    console.log(filterPinRooms)
+
+    renderPins(filterPinRooms.slice(0, 5));
+    window.renderShowCard(filterPinRooms.slice(0, 5));
   };
 
   var filteringPins = function (array) {
     renderPins(array.slice(0, 5));
-
     window.renderShowCard(array);
 
-    houseType.addEventListener('change', function () {
+    var onChangeFilterAll = function () {
       var mapPins = document.querySelector('.map__pins'); // сюда пишутся пины баттоны
       var mapPin = document.querySelectorAll('.map__pin'); // все пины
 
@@ -71,13 +84,16 @@ window.renderPinsClick = function () {
         mapPins.removeChild(mapPin[i]);
       }
       window.closeCard();
-      if (houseType.value === 'any') {
+      if (housingType.value === 'any' && housingPrice.value === 'any' && housingRoom.value === 'any' && housingQuest.value === 'any') {
         renderPins(array.slice(0, 5));
         window.renderShowCard(array);
       } else {
-        sevaData(houseType.value, array);
+        filteringType(housingType.value, housingRoom.value, array);
       }
-    });
+    };
+
+    housingType.addEventListener('change', onChangeFilterAll);
+    housingRoom.addEventListener('change', onChangeFilterAll);
   };
 
   window.backend.load(filteringPins, errorHandler);

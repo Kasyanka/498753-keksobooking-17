@@ -56,11 +56,9 @@ window.renderPinsClick = function () {
   var inputElevator = document.querySelector('#filter-elevator');
   var inputConditioner = document.querySelector('#filter-conditioner');
 
-
-
   var filteringType = function (type, room, guest, price, wifi, dishwasher, parking, washer, elevator, conditioner, array) {
     window.SERVER_DATA = array;
-    console.log(conditioner);
+
     var filterPinType = window.SERVER_DATA.filter(function (objeckt) {
       return type === 'any' || objeckt.offer.type === type;
     });

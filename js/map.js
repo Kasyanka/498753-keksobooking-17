@@ -4,7 +4,7 @@
 (function () {
   // функция вывода всех Pinов с сервера на карту
   var single = false;
-  var onClickActivate = function () {
+  var onClickActivatePin = function () {
 
     if (!single) {
       window.renderPinsClick();
@@ -12,15 +12,16 @@
     single = true;
   };
 
-  var activateForm = function () {
+  window.activatePin = function () {
     var activate = document.querySelector('.map__pin--main');
-    activate.addEventListener('mousedown', onClickActivate);
+    activate.addEventListener('mousedown', onClickActivatePin);
   };
-  activateForm();
+  window.activatePin();
 
   // функция передвижения главной метки по карте
   var movePin = function () {
     var activateMove = document.querySelector('.map__pin--main');
+
 
     // зажимаем метку
     activateMove.addEventListener('mousedown', function (evt) {
@@ -29,6 +30,7 @@
         x: evt.clientX,
         y: evt.clientY
       };
+
       // двигаем метку
       var onMouseMove = function (moveEvt) {
         if ((moveEvt.clientY + window.pageYOffset) < 130 || (moveEvt.clientY + window.pageYOffset) > 630 || moveEvt.clientX < 380 || moveEvt.clientX > 1520) {

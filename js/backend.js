@@ -1,6 +1,6 @@
 'use strict';
 window.backend = (function () {
-  var URL_SAVE = 'https://js.dump.academy/keksobooking111';
+  var URL_SAVE = 'https://js.dump.academy/keksobooking';
   var URL_LOAD = 'https://js.dump.academy/keksobooking/data';
 
   return {

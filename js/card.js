@@ -94,7 +94,7 @@ window.renderShowCard = function (data) {
           map.insertBefore(getCard(j), block);
 
           document.addEventListener('keydown', function (evt) {
-            if (evt.keyCode === 27) {
+            if (evt.keyCode === window.ESC_BUTTON) {
               window.closeCard();
             }
           });

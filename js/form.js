@@ -22,9 +22,9 @@
   deactivationInput();
 
   // функция активации формы (все поля доступны для рекдактирования) срабатывает в функции activateForm
-  var single = false;
+  window.singleFormActivation = false;
   var onClickActivateForm = function () {
-    if (!single) {
+    if (!window.singleFormActivation) {
       var adForm = document.querySelector('.ad-form');
       var special = document.querySelector('.map');
       adForm.classList.remove('ad-form--disabled');
@@ -48,7 +48,7 @@
       var buttonSubmit = document.querySelector('.ad-form__submit');
       buttonSubmit.disabled = false;
     }
-    single = true;
+    window.singleFormActivation = true;
   };
 
   // функция активации формы при сдвиге главной метки
@@ -57,6 +57,18 @@
     activate.addEventListener('mousedown', onClickActivateForm);
   };
   activateForm();
+
+  // функция активации формы при ентере главной метки
+  var activatePinKeydownForm = function () {
+    var activate = document.querySelector('.map__pin--main');
+    activate.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.ENTER_BUTTON) {
+        onClickActivateForm();
+      }
+    });
+  };
+  activatePinKeydownForm();
+
 
   // настройки прайса
   var settingPlaceholder = function () {
@@ -143,11 +155,7 @@
   };
   settingRoomNumber();
 
-  var onDeactivationAll = function () {
-
-    var special = document.querySelector('.map');
-    var mapPins = document.querySelector('.map__pins'); // сюда пишутся пины баттоны
-    var mapPin = document.querySelectorAll('.map__pin'); // все пины
+  var resetForm = function () {
     var title = document.querySelector('#title');
     var type = document.querySelector('#type');
     var price = document.querySelector('#price');
@@ -162,7 +170,40 @@
     var washer = document.querySelector('#feature-washer');
     var elevator = document.querySelector('#feature-elevator');
     var conditioner = document.querySelector('#feature-conditioner');
+    var address = document.querySelector('#address');
+    var mapPinMain = document.querySelector('.map__pin--main');
 
+    title.value = '';
+    type.value = 'flat';
+    price.value = 1000;
+    price.value = '';
+    roomNumber.value = 1;
+    capacity.value = 1;
+    description.value = '';
+    timein.value = '12:00';
+    timeout.value = '12:00';
+    wifi.checked = false;
+    dishwasher.checked = false;
+    parking.checked = false;
+    washer.checked = false;
+    elevator.checked = false;
+    conditioner.checked = false;
+    address.value = '';
+
+    mapPinMain.style.left = '570px';
+    mapPinMain.style.top = '375px';
+  };
+
+  var adFormReset = document.querySelector('.ad-form__reset');
+  adFormReset.addEventListener('click', function () {
+    resetForm();
+  });
+
+  var onDeactivationAll = function () {
+
+    var special = document.querySelector('.map');
+    var mapPins = document.querySelector('.map__pins'); // сюда пишутся пины баттоны
+    var mapPin = document.querySelectorAll('.map__pin'); // все пины
 
     var successTemplate = document.querySelector('#success')
         .content
@@ -170,17 +211,24 @@
     var successElement = successTemplate.cloneNode(true);
     adForm.appendChild(successElement);
 
+    var activateFormPin = function () {
+      adForm.removeChild(successMessage);
+      window.single = false;
+      window.activatePin();
+      window.singleFormActivation = false;
+      activateForm();
+      activatePinKeydownForm();
+    };
+
     var successMessage = document.querySelector('.success');
     successMessage.addEventListener('click', function () {
-      adForm.removeChild(successMessage);
-      window.activatePin();
+      activateFormPin();
     });
 
     var onKeydownSuccessMessage = function (evt) {
-      if (evt.keyCode === 27) {
-        adForm.removeChild(successMessage);
+      if (evt.keyCode === window.ESC_BUTTON) {
+        activateFormPin();
         document.removeEventListener('keydown', onKeydownSuccessMessage);
-        window.activatePin();
       }
     };
     document.addEventListener('keydown', onKeydownSuccessMessage);
@@ -194,35 +242,42 @@
 
     deactivationInput();
     window.closeCard();
-
-    title.value = title.placeholder;
-    type.value = 'flat';
-    price.value = 1000;
-    price.placeholder = 1000;
-    roomNumber.value = 1;
-    capacity.value = 1;
-    description.value = description.placeholder;
-    timein.value = '12:00';
-    timeout.value = '12:00';
-    wifi.checked = false;
-    dishwasher.checked = false;
-    parking.checked = false;
-    washer.checked = false;
-    elevator.checked = false;
-    conditioner.checked = false;
-
+    resetForm();
   };
-  var onErrorHandler = function (errorMessage) {
-    var main = document.querySelector('.main');
+  var onErrorHandler = function (Message) {
+    var main = document.querySelector('main');
     var errorTemplate = document.querySelector('#error')
   .content
   .querySelector('.error');
+
     var errorElement = errorTemplate.cloneNode(true);
-    errorElement.textContent = errorMessage;
+    var errorMessage = errorElement.querySelector('.error__message');
+    errorMessage.textContent = Message;
     main.appendChild(errorElement);
+
+    var errorButton = document.querySelector('.error__button');
+    var buttonSubmit = document.querySelector('.ad-form__submit');
+    errorButton.addEventListener('click', function () {
+      main.removeChild(errorElement);
+      buttonSubmit.disabled = false;
+    });
+
+    errorElement.addEventListener('click', function () {
+      main.removeChild(errorElement);
+      buttonSubmit.disabled = false;
+    });
+
+    var onKeydownErorMessage = function (evt) {
+      if (evt.keyCode === window.ESC_BUTTON) {
+        main.removeChild(errorElement);
+        buttonSubmit.disabled = false;
+        document.removeEventListener('keydown', onKeydownErorMessage);
+      }
+    };
+    document.addEventListener('keydown', onKeydownErorMessage);
   };
 
-    // document.body.insertAdjacentElement('afterbegin', node);
+  // document.body.insertAdjacentElement('afterbegin', node);
 
   var adForm = document.querySelector('.ad-form');
   var buttonSubmit = document.querySelector('.ad-form__submit');

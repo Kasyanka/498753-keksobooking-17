@@ -2,14 +2,17 @@
 'use strict';
 
 (function () {
+  window.ESC_BUTTON = 27;
+  window.ENTER_BUTTON = 13;
+
   // функция вывода всех Pinов с сервера на карту
-  var single = false;
+  window.single = false;
   var onClickActivatePin = function () {
 
-    if (!single) {
+    if (!window.single) {
       window.renderPinsClick();
     }
-    single = true;
+    window.single = true;
   };
 
   window.activatePin = function () {
@@ -17,6 +20,16 @@
     activate.addEventListener('mousedown', onClickActivatePin);
   };
   window.activatePin();
+
+  window.activatePinKeydown = function () {
+    var activate = document.querySelector('.map__pin--main');
+    activate.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.ENTER_BUTTON) {
+        onClickActivatePin();
+      }
+    });
+  };
+  window.activatePinKeydown();
 
   // функция передвижения главной метки по карте
   var movePin = function () {
@@ -30,7 +43,6 @@
         x: evt.clientX,
         y: evt.clientY
       };
-
       // двигаем метку
       var onMouseMove = function (moveEvt) {
         if ((moveEvt.clientY + window.pageYOffset) < 130 || (moveEvt.clientY + window.pageYOffset) > 630 || moveEvt.clientX < 380 || moveEvt.clientX > 1520) {

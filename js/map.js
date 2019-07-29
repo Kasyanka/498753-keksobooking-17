@@ -4,6 +4,11 @@
 (function () {
   window.ESC_BUTTON = 27;
   window.ENTER_BUTTON = 13;
+  window.MAIN_PIN_START_X = 603;
+  window.MAIN_PIN_START_Y = 462;
+  var RADIUS_PIN = 33;
+  var DIAMETER_PIN = 65;
+  var HEIGHT_END_PIN = 22;
 
   // функция вывода всех Pinов с сервера на карту
   window.single = false;
@@ -64,9 +69,9 @@
         // настройка адреса
         var addAddress = function () {
           var address = document.querySelector('#address');
-          var pinMainLeft = parseInt(addressX, 10) + 33;
-          var pinMainTop = parseInt(addressY, 10) + 65 + 22;
-          address.setAttribute('value', pinMainLeft + ', ' + pinMainTop);
+          var pinMainLeft = parseInt(addressX, 10) + RADIUS_PIN;
+          var pinMainTop = parseInt(addressY, 10) + DIAMETER_PIN + HEIGHT_END_PIN;
+          address.value = pinMainLeft + ', ' + pinMainTop;
         };
         addAddress();
       };

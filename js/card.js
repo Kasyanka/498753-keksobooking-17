@@ -1,6 +1,5 @@
 'use strict';
 window.renderShowCard = function (data) {
-
   var getCard = function (n) {
     var fragment = document.createDocumentFragment();
     var template = document.querySelector('#card')
@@ -74,11 +73,12 @@ window.renderShowCard = function (data) {
     return fragment;
   };
 
+  // функция открытия карты пина
   var showCard = function () {
     var map = document.querySelector('.map');
     var block = document.querySelector('.map__filters-container');
     var mapPinAll = document.querySelectorAll('.pin_all');
-
+    // функция закрытия карты пина
     window.closeCard = function () {
       var templateCard = document.querySelector('.map__card');
       if (templateCard) {
@@ -89,8 +89,9 @@ window.renderShowCard = function (data) {
     for (var i = 0; i < mapPinAll.length; i++) {
       (function (j) {
         mapPinAll[j].addEventListener('click', function () {
+          // удаляем карту если она есть открытая
           window.closeCard();
-
+          // открываем другую карту
           map.insertBefore(getCard(j), block);
 
           document.addEventListener('keydown', function (evt) {

@@ -2,7 +2,10 @@
 'use strict';
 
 (function () {
-// функция деактевации формы (ничего нельзя в форму забить)
+  var address = document.querySelector('#address');
+  address.setAttribute('value', window.MAIN_PIN_START_X + ', ' + window.MAIN_PIN_START_Y);
+
+  // функция деактевации формы (ничего нельзя в форму забить)
   var deactivationInput = function () {
     var adFormInput = document.querySelectorAll('.ad-form input');
     for (var i = 0; i < adFormInput.length; i++) {
@@ -170,7 +173,6 @@
     var washer = document.querySelector('#feature-washer');
     var elevator = document.querySelector('#feature-elevator');
     var conditioner = document.querySelector('#feature-conditioner');
-    var address = document.querySelector('#address');
     var mapPinMain = document.querySelector('.map__pin--main');
 
     title.value = '';
@@ -188,7 +190,8 @@
     washer.checked = false;
     elevator.checked = false;
     conditioner.checked = false;
-    address.value = '';
+    address.value = window.MAIN_PIN_START_X + ', ' + window.MAIN_PIN_START_Y;
+
 
     mapPinMain.style.left = '570px';
     mapPinMain.style.top = '375px';

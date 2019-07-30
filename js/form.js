@@ -25,9 +25,9 @@
   deactivationInput();
 
   // функция активации формы (все поля доступны для рекдактирования) срабатывает в функции activateForm
-  window.singleFormActivation = false;
+  var singleFormActivation = false;
   var onClickActivateForm = function () {
-    if (!window.singleFormActivation) {
+    if (!singleFormActivation) {
       var adForm = document.querySelector('.ad-form');
       var special = document.querySelector('.map');
       adForm.classList.remove('ad-form--disabled');
@@ -51,17 +51,17 @@
       var buttonSubmit = document.querySelector('.ad-form__submit');
       buttonSubmit.disabled = false;
     }
-    window.singleFormActivation = true;
+    singleFormActivation = true;
   };
 
-  // функция активации формы при сдвиге главной метки
+  // функция активации ФОРМЫ при сдвиге главной метки
   var activateForm = function () {
     var activate = document.querySelector('.map__pin--main');
     activate.addEventListener('mousedown', onClickActivateForm);
   };
   activateForm();
 
-  // функция активации формы при ентере главной метки
+  // функция активации ФОРМЫ при ентере главной метки
   var activatePinKeydownForm = function () {
     var activate = document.querySelector('.map__pin--main');
     activate.addEventListener('keydown', function (evt) {
@@ -158,6 +158,7 @@
   };
   settingRoomNumber();
 
+  // функция обнуления формы после отправки формы
   var resetForm = function () {
     var title = document.querySelector('#title');
     var type = document.querySelector('#type');
@@ -197,37 +198,46 @@
     mapPinMain.style.top = '375px';
   };
 
+  // две функции для кнопки "очистить форму" клик и ентер
   var adFormReset = document.querySelector('.ad-form__reset');
   adFormReset.addEventListener('click', function () {
     resetForm();
   });
+  adFormReset.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === window.ENTER_BUTTON) {
+      resetForm();
+    }
+  });
 
+  // функция для сохранения формы в случае удачи
   var onDeactivationAll = function () {
 
     var special = document.querySelector('.map');
     var mapPins = document.querySelector('.map__pins'); // сюда пишутся пины баттоны
     var mapPin = document.querySelectorAll('.map__pin'); // все пины
 
+    // рисуем сообщение удачной отправки формы
     var successTemplate = document.querySelector('#success')
         .content
         .querySelector('.success');
     var successElement = successTemplate.cloneNode(true);
     adForm.appendChild(successElement);
 
+    // общая функция закрытия сообщения удачной отправки формы и активации формы и пинов после закрытия формы удачной отправки формы
     var activateFormPin = function () {
       adForm.removeChild(successMessage);
       window.single = false;
       window.activatePin();
-      window.singleFormActivation = false;
+      singleFormActivation = false;
       activateForm();
       activatePinKeydownForm();
     };
 
+    // две функции закрытия сообщения удачной отправки формы при клике и эскейпе
     var successMessage = document.querySelector('.success');
     successMessage.addEventListener('click', function () {
       activateFormPin();
     });
-
     var onKeydownSuccessMessage = function (evt) {
       if (evt.keyCode === window.ESC_BUTTON) {
         activateFormPin();
@@ -236,40 +246,49 @@
     };
     document.addEventListener('keydown', onKeydownSuccessMessage);
 
-    // убираем все пины с карты кроме главного
+    // убираем все пины с карты кроме главного в момент загрузки сообщения удачной отправки формы
     for (var i = 1; i < mapPin.length; i++) {
       mapPins.removeChild(mapPin[i]);
     }
     adForm.classList.add('ad-form--disabled');
     special.classList.add('map--faded');
-
+    // дэактивируем форму, закрываем все карты (если открыты), обнуляем данные формы в момент загрузки сообщения удачной отправки формы
     deactivationInput();
     window.closeCard();
     resetForm();
+    window.delHandlerAll();
   };
+
+  // функция неудачной отправки формы
   var onErrorHandler = function (Message) {
     var main = document.querySelector('main');
     var errorTemplate = document.querySelector('#error')
   .content
   .querySelector('.error');
 
+    // выводим сообщение неудачной отправки формы
     var errorElement = errorTemplate.cloneNode(true);
     var errorMessage = errorElement.querySelector('.error__message');
     errorMessage.textContent = Message;
     main.appendChild(errorElement);
 
+    // общая функция закрытия сообщения неудачной отправки формы
+    var removeErrorElement = function () {
+      main.removeChild(errorElement);
+      buttonSubmit.disabled = false;
+    };
+
+    // закрываем сообщение неудачной отпрвки формы при клике на кнопку "попробовать еще раз"
     var errorButton = document.querySelector('.error__button');
     var buttonSubmit = document.querySelector('.ad-form__submit');
     errorButton.addEventListener('click', function () {
-      main.removeChild(errorElement);
-      buttonSubmit.disabled = false;
+      removeErrorElement();
     });
 
+    // закрываем сообщение неудачной отпрвки формы при клике в любое место по сообщению и при эскейп
     errorElement.addEventListener('click', function () {
-      main.removeChild(errorElement);
-      buttonSubmit.disabled = false;
+      removeErrorElement();
     });
-
     var onKeydownErorMessage = function (evt) {
       if (evt.keyCode === window.ESC_BUTTON) {
         main.removeChild(errorElement);
@@ -285,6 +304,7 @@
   var adForm = document.querySelector('.ad-form');
   var buttonSubmit = document.querySelector('.ad-form__submit');
 
+  // сохранение формы после ее заполнения
   adForm.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(adForm), onDeactivationAll, onErrorHandler);
     evt.preventDefault();

@@ -10,7 +10,7 @@
   var DIAMETER_PIN = 65;
   var HEIGHT_END_PIN = 22;
 
-  // функция вывода всех Pinов с сервера на карту
+  // функция вывода всех Pinов с сервера на карту берет данные из модуля data.js
   window.single = false;
   var onClickActivatePin = function () {
 
@@ -20,12 +20,14 @@
     window.single = true;
   };
 
+  // функция активации ПИНОВ при сдвиге главной метки
   window.activatePin = function () {
     var activate = document.querySelector('.map__pin--main');
     activate.addEventListener('mousedown', onClickActivatePin);
   };
   window.activatePin();
 
+  // функция активации ПИНОВ при ентере главной метки
   window.activatePinKeydown = function () {
     var activate = document.querySelector('.map__pin--main');
     activate.addEventListener('keydown', function (evt) {

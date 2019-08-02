@@ -18,11 +18,11 @@
     };
 
     // функция создания Pinов но без подтянутых параметров
-    var createBlock = function (templ, objeckt) {
+    var createBlock = function (templ, object) {
       var block = templ.cloneNode(true);
-      block.style.left = objeckt.location.x + 'px';
-      block.style.top = objeckt.location.y + 'px';
-      block.querySelector('img').src = objeckt.author.avatar;
+      block.style.left = object.location.x + 'px';
+      block.style.top = object.location.y + 'px';
+      block.querySelector('img').src = object.author.avatar;
       return block;
     };
 
@@ -49,76 +49,79 @@
 
     // фильтруем пины по всем параметрам
     var filteringPinAll = function (type, room, guest, price, wifi, dishwasher, parking, washer, elevator, conditioner, array) {
+      var PRICE_MIN = 10000;
+      var PRICE_MAX = 50000;
+
       window.SERVER_DATA = array;
 
-      var filterPinType = window.SERVER_DATA.filter(function (objeckt) {
-        return type === 'any' || objeckt.offer.type === type;
+      var filterPinType = window.SERVER_DATA.filter(function (object) {
+        return type === 'any' || object.offer.type === type;
       });
 
-      var filterPinRooms = filterPinType.filter(function (objeckt) {
-        return room === 'any' || objeckt.offer.rooms === parseInt(room, 10);
+      var filterPinRooms = filterPinType.filter(function (object) {
+        return room === 'any' || object.offer.rooms === parseInt(room, 10);
       });
 
-      var filterPinQuest = filterPinRooms.filter(function (objeckt) {
-        return guest === 'any' || objeckt.offer.guests === parseInt(guest, 10);
+      var filterPinQuest = filterPinRooms.filter(function (object) {
+        return guest === 'any' || object.offer.guests === parseInt(guest, 10);
       });
 
       if (price === 'any') {
         var filterPinPrice = filterPinQuest;
       }
       if (price === 'low') {
-        filterPinPrice = filterPinQuest.filter(function (objeckt) {
-          return objeckt.offer.price < 10000;
+        filterPinPrice = filterPinQuest.filter(function (object) {
+          return object.offer.price < PRICE_MIN;
         });
       }
       if (price === 'high') {
-        filterPinPrice = filterPinQuest.filter(function (objeckt) {
-          return objeckt.offer.price >= 50000;
+        filterPinPrice = filterPinQuest.filter(function (object) {
+          return object.offer.price >= PRICE_MAX;
         });
       }
       if (price === 'middle') {
-        filterPinPrice = filterPinQuest.filter(function (objeckt) {
-          return objeckt.offer.price >= 10000 && objeckt.offer.price < 50000;
+        filterPinPrice = filterPinQuest.filter(function (object) {
+          return object.offer.price >= PRICE_MIN && object.offer.price < PRICE_MAX;
         });
       }
       if (wifi) {
-        var filterPinWifi = filterPinPrice.filter(function (objeckt) {
-          return objeckt.offer.features.indexOf('wifi') !== -1;
+        var filterPinWifi = filterPinPrice.filter(function (object) {
+          return object.offer.features.indexOf('wifi') !== -1;
         });
       } else {
         filterPinWifi = filterPinPrice;
       }
       if (dishwasher) {
-        var filterPinDishwasher = filterPinWifi.filter(function (objeckt) {
-          return objeckt.offer.features.indexOf('dishwasher') !== -1;
+        var filterPinDishwasher = filterPinWifi.filter(function (object) {
+          return object.offer.features.indexOf('dishwasher') !== -1;
         });
       } else {
         filterPinDishwasher = filterPinWifi;
       }
       if (parking) {
-        var filterPinParking = filterPinDishwasher.filter(function (objeckt) {
-          return objeckt.offer.features.indexOf('parking') !== -1;
+        var filterPinParking = filterPinDishwasher.filter(function (object) {
+          return object.offer.features.indexOf('parking') !== -1;
         });
       } else {
         filterPinParking = filterPinDishwasher;
       }
       if (washer) {
-        var filterPinWasher = filterPinParking.filter(function (objeckt) {
-          return objeckt.offer.features.indexOf('washer') !== -1;
+        var filterPinWasher = filterPinParking.filter(function (object) {
+          return object.offer.features.indexOf('washer') !== -1;
         });
       } else {
         filterPinWasher = filterPinParking;
       }
       if (elevator) {
-        var filterPinElevator = filterPinWasher.filter(function (objeckt) {
-          return objeckt.offer.features.indexOf('elevator') !== -1;
+        var filterPinElevator = filterPinWasher.filter(function (object) {
+          return object.offer.features.indexOf('elevator') !== -1;
         });
       } else {
         filterPinElevator = filterPinWasher;
       }
       if (conditioner) {
-        var filterPinConditioner = filterPinElevator.filter(function (objeckt) {
-          return objeckt.offer.features.indexOf('conditioner') !== -1;
+        var filterPinConditioner = filterPinElevator.filter(function (object) {
+          return object.offer.features.indexOf('conditioner') !== -1;
         });
       } else {
         filterPinConditioner = filterPinElevator;
